@@ -12,6 +12,48 @@
     .narrative {
       max-width: 40rem;
     }
+
+    /* Add custom styling for range input markers */
+    datalist {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--bs-body-color);
+    }
+
+    datalist option {
+      padding: 0;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    datalist option::before {
+      content: attr(value);
+    }
+
+    /* Add tick marks */
+    datalist option::after {
+      content: '';
+      width: 1px;
+      height: 0.5rem;
+      background: currentColor;
+      position: absolute;
+      top: -0.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #dialog-history td {
+      cursor: pointer;
+    }
+
+    #dialog-run,
+    #dialog-result {
+      scroll-margin-top: 3rem;
+      scroll-margin-bottom: 3rem;
+    }
   </style>
 </head>
 
@@ -56,7 +98,7 @@
 
     <form id="dialog-form">
       <div class="row mb-3">
-        <div class="col-sm-6" data-bot-id="0">
+        <div class="col-md-6" data-bot-id="0">
           <div class="row mb-3">
             <label for="name0" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-10">
@@ -69,16 +111,30 @@
               <select class="form-control" name="model0" id="model0" required></select>
             </div>
           </div>
+          <div class="row mb-3">
+            <label for="temperature0" class="col-sm-2 mb-3 col-form-label">Temperature</label>
+            <div class="col-sm-10">
+              <input class="form-range mt-2" name="temperature0" id="temperature0" type="range" min="0" max="1" step="0.01" value="0.5" list="markers0">
+              <datalist id="markers0">
+                <option value="0.0"></option>
+                <option value="0.2"></option>
+                <option value="0.4"></option>
+                <option value="0.6"></option>
+                <option value="0.8"></option>
+                <option value="1.0"></option>
+              </datalist>
+            </div>
+          </div>
           <label for="prompt0" class="form-label d-none">System Instructions</label>
           <textarea class="form-control mb-3" name="prompt0" id="prompt0" rows="3" placeholder="Instructions for bot 1" required></textarea>
           <div class="row mb-3">
-            <label for="chat1" class="col-sm-2 col-form-label">Name</label>
+            <label for="chat0" class="col-sm-2 col-form-label">Begin with</label>
             <div class="col-sm-10">
               <input class="form-control" name="chat0" id="chat1" placeholder="Conversation starter" required>
             </div>
           </div>
         </div>
-        <div class="col-sm-6" data-bot-id="1">
+        <div class="col-md-6" data-bot-id="1">
           <div class="row mb-3">
             <label for="name1" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-10">
@@ -91,8 +147,29 @@
               <select class="form-control" name="model1" id="model0" required></select>
             </div>
           </div>
+          <div class="row mb-3">
+            <label for="temperature1" class="col-sm-2 mb-3 col-form-label">Temperature</label>
+            <div class="col-sm-10">
+              <input class="form-range mt-2" name="temperature1" id="temperature1" type="range" min="0" max="1" step="0.01" value="0.5" list="markers1">
+              <datalist id="markers1">
+                <option value="0.0"></option>
+                <option value="0.2"></option>
+                <option value="0.4"></option>
+                <option value="0.6"></option>
+                <option value="0.8"></option>
+                <option value="1.0"></option>
+              </datalist>
+            </div>
+          </div>
           <label for="prompt1" class="form-label d-none">System Instructions</label>
           <textarea class="form-control mb-3" name="prompt1" id="prompt1" rows="3" placeholder="Instructions for bot 2" required></textarea>
+          <div class="row mb-3">
+            <label for="n" class="col-sm-2 col-form-label">Context</label>
+            <div class="col-sm-10 d-flex align-items-center">
+              <input class="form-control w-auto" name="n" id="n" type="number" min="1" max="10" value="5" placeholder="Number of converations to remember" required>
+              <div class="form-text ms-2"># of previous conversations in history.</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -106,6 +183,7 @@
 
   </div>
 
+  <div class="container my-4" id="dialog-history"></div>
 
   <footer class="my-5 vh-100 d-flex align-items-center justify-content-center">
     <h1 class="display-4">Designed by <a href="https://gramener.com/" class="text-reset link-offset-3 link-underline link-underline-opacity-25">Gramener</a></h1>
